@@ -15,7 +15,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.get('/me', async (req, res) => {
-  res.send('Hello World')
+  const list = [{ name: 'juan' }, { name: 'pedro' }]
+  res.send(list)
 })
 
 //error: middleware to write logs and send 500 status responses
