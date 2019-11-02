@@ -1,31 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { Provider } from 'react-redux'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import store from './store/store'
 import './App.css'
 
+import Layout from './components/Layout'
+import LogIn from './components/LogIn'
+import Callback from './containers/Callback'
+import SoundsGood from './containers/SoundsGood'
+
 function App() {
-  const [playlists, setPlaylists] = useState([])
-
-  useEffect(() => {
-    async function fetchPlaylist() {
-      try {
-        const response = await fetch('/me', { accept: 'application/json' })
-        const data = await response.json()
-        setPlaylists(data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchPlaylist()
-  }, [])
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>{playlists.map(x => x.name).join('asd')}</code> and save to
-          reload.
-        </p>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <Layout>
+          <Route path="/" exact component={LogIn} />
+          <Route path="/callback" component={Callback} />
+          <Route path="/home" component={SoundsGood} />
+        </Layout>
+      </Router>
+    </Provider>
   )
 }
 
