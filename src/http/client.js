@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const http = axios.create({
-  baseURL: 'https://spotify.v1.api/',
+  baseURL: 'https://api.spotify.com/v1/',
   headers: { 'Content-Type': 'application/json' },
   responseType: 'json'
 })
