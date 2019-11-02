@@ -25,7 +25,7 @@ class Callback extends React.Component {
           </Link>
         </>
       )
-    return <Redirect to="/home" />
+    return <Redirect to="/me" />
   }
 }
 const mapStateToProps = state => ({

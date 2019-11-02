@@ -16,7 +16,7 @@ function App() {
         <Layout>
           <Route path="/" exact component={LogIn} />
           <Route path="/callback" component={Callback} />
-          <Route path="/home" component={SoundsGood} />
+          <Route path="/me" component={SoundsGood} />
         </Layout>
       </Router>
     </Provider>
