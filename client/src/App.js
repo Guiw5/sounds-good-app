@@ -7,7 +7,9 @@ function App() {
   useEffect(() => {
     async function fetchPlaylist() {
       try {
-        const response = await fetch('/me', { accept: 'application/json' })
+        const response = await fetch('/login', {
+          accept: 'application/json'
+        })
         const data = await response.json()
         setPlaylists(data)
       } catch (error) {
