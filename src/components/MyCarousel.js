@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Carousel,
   CarouselItem,
@@ -11,8 +11,13 @@ export const MyCarousel = ({ items, setPlaylist }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [animating, setAnimating] = useState(false)
 
+  useEffect(() => {
+    if (items.length > 0) setPlaylist(items[activeIndex].id)
+  }, [])
+
   const setItem = index => {
-    Promise.all([setActiveIndex(index)])
+    setPlaylist(items[index].id)
+    setActiveIndex(index)
   }
 
   const next = () => {
@@ -47,6 +52,7 @@ export const MyCarousel = ({ items, setPlaylist }) => {
 
   return (
     <Carousel
+      interval={'10000'}
       pause={'hover'}
       ride={false}
       activeIndex={activeIndex}

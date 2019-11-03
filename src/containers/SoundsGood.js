@@ -2,11 +2,9 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import Profile from './Profile'
 import Playlists from './Playlists'
-import authService from '../services/authService'
+import Songs from './Songs'
 
-function Songs() {
-  return <div>songs</div>
-}
+import authService from '../services/authService'
 
 export default class SoundsGood extends React.Component {
   render() {
@@ -18,8 +16,16 @@ export default class SoundsGood extends React.Component {
           <div className="col">
             <Profile />
           </div>
-          <div className="col">
-            <div className="row" styles={{ padding: '10px' }}>
+          <div
+            className="col col-8"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'flex-start'
+            }}
+          >
+            <div className="row" style={{ padding: '10px' }}>
               <Playlists />
             </div>
             <div className="row">

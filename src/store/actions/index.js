@@ -71,3 +71,51 @@ export const getPlaylists = () => async dispatch => {
     dispatch(getPlaylistsError(error))
   }
 }
+
+export const getSongsRequest = () => ({
+  type: 'GET_SONGS_REQUEST'
+})
+
+export const getSongsSuccess = data => ({
+  type: 'GET_SONGS_SUCCESS',
+  data
+})
+
+export const getSongsError = () => ({
+  type: 'GET_SONGS_ERROR'
+})
+
+export const setPlaylist = playlist_id => async dispatch => {
+  try {
+    const token = authService.getAccessToken()
+    dispatch(getSongsRequest())
+
+    let { data } = await http.get(`/playlists/${playlist_id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+
+    const spotiSongs = data.tracks.items.slice(0, 5)
+
+    const playlist = spotiSongs.map(t => {
+      return {
+        name: t.track.name,
+        album: t.track.album.name,
+        artists: t.track.artists.map(a => {
+          return { name: a.name, uri: a.uri, id: a.id }
+        })
+      }
+    })
+    // id: data.id,
+    // description: data.description,
+    // name: data.name,
+    // owner: data.owner.display_name,
+    // href: data.href,
+
+    console.log('das', playlist)
+
+    dispatch(getSongsSuccess(playlist))
+  } catch (error) {
+    // authService.logout()
+    dispatch(getSongsError(error))
+  }
+}

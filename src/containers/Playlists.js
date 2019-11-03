@@ -11,7 +11,12 @@ class Playlists extends React.Component {
 
   render() {
     if (this.props.loading) return <p>Loading...</p>
-    return <MyCarousel items={this.props.playlists} />
+    return (
+      <MyCarousel
+        items={this.props.playlists}
+        setPlaylist={this.props.setPlaylist}
+      />
+    )
   }
 }
 
@@ -21,8 +26,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getPlaylists: () => dispatch(actions.getPlaylists())
-  // setPlaylist: id => dispatch(actions.setPlaylist(id))
+  getPlaylists: () => dispatch(actions.getPlaylists()),
+  setPlaylist: id => dispatch(actions.setPlaylist(id))
 })
 
 export default connect(
