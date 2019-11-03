@@ -27,6 +27,7 @@
 .profile {
   display: flex;
   min-height: 100vh;
+  padding: 10px 20px;
 }
 .App-link {
   color: #09d3ac;

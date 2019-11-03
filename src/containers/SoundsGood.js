@@ -1,12 +1,8 @@
 import React from 'react'
-import Profile from './Profile'
-import authService from '../services/authService'
-
 import { Redirect } from 'react-router-dom'
-
-function Playlists() {
-  return <div>playlists</div>
-}
+import Profile from './Profile'
+import Playlists from './Playlists'
+import authService from '../services/authService'
 
 function Songs() {
   return <div>songs</div>
@@ -17,7 +13,7 @@ export default class SoundsGood extends React.Component {
     if (!authService.isLogged()) return <Redirect to="/" />
 
     return (
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
           <div class="col">
             <Profile />

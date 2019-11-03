@@ -17,16 +17,39 @@ export const getProfileError = () => ({
 export const getProfile = () => async dispatch => {
   try {
     const token = authService.getAccessToken()
-    console.log('token', token)
     dispatch(getProfileRequest())
     let { data } = await http.get(`/me`, {
       headers: { Authorization: `Bearer ${token}` }
     })
-
-    console.log('data', data)
     dispatch(getProfileSuccess(data))
   } catch (error) {
-    console.log('profile', error)
     dispatch(getProfileError(error))
+  }
+}
+
+export const getPlaylistsRequest = () => ({
+  type: 'GET_PLAYLISTS_REQUEST'
+})
+
+export const getPlaylistsSuccess = profile => ({
+  type: 'GET_PLAYLISTS_SUCCESS',
+  profile
+})
+
+export const getPlaylistsError = () => ({
+  type: 'GET_PLAYLISTS_ERROR'
+})
+
+export const getPlaylists = () => async dispatch => {
+  try {
+    const token = authService.getAccessToken()
+    dispatch(getPlaylistsRequest())
+    let { data } = await http.get(`/me/playlists`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+
+    dispatch(getPlaylistsSuccess(data))
+  } catch (error) {
+    dispatch(getPlaylistsError(error))
   }
 }
