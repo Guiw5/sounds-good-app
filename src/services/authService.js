@@ -53,12 +53,8 @@ class AuthService {
     return url
   }
 
-  getAccessToken = () => {
-    // validation from /callback?access_token=qweqweasd
-    const params = this.getHashParams()
-    console.log('params', params)
-    const { access_token, state } = params
-
+  validateAuth = () => {
+    const { access_token, state } = this.getHashParams()
     const storedState = localStorage.getItem(stateKey)
 
     if (access_token && (state == null || state !== storedState)) {
@@ -67,6 +63,30 @@ class AuthService {
       localStorage.removeItem(stateKey)
       return access_token
     }
+  }
+
+  login = access_token => {
+    localStorage.setItem('access_token', access_token)
+  }
+
+  authenticate = () => {
+    const access_token = this.validateAuth()
+    if (access_token !== null) this.login(access_token)
+    return access_token
+  }
+
+  getAccessToken = () => {
+    const token = localStorage.getItem('access_token')
+    return token
+  }
+
+  isLogged = () => {
+    const token = this.getAccessToken()
+    return token !== null && token !== 'undefined'
+  }
+
+  logout = () => {
+    localStorage.removeItem('access_token')
   }
 }
 

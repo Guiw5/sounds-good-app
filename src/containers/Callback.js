@@ -1,22 +1,23 @@
 import React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Button } from 'reactstrap'
-import { connect } from 'react-redux'
 
-import * as authActions from '../store/actions/index'
-import * as selectors from '../store/reducers/selectors'
 import authService from '../services/authService'
 
 class Callback extends React.Component {
-  componentDidMount() {
-    const token = authService.getAccessToken()
-    if (token !== null) {
-      this.props.authenticate(token)
+  constructor(props) {
+    super(props)
+
+    /**
+     * Callback succeds with results of authentication (token)
+     */
+    this.state = {
+      token: authService.authenticate()
     }
   }
 
   render() {
-    if (!this.props.isLogged)
+    if (!this.state.token)
       return (
         <>
           <p>Oops, could not logged in correctly</p>
@@ -28,15 +29,5 @@ class Callback extends React.Component {
     return <Redirect to="/me" />
   }
 }
-const mapStateToProps = state => ({
-  isLogged: selectors.isLogged(state)
-})
 
-const mapDispatchToProps = dispatch => ({
-  authenticate: accessToken => dispatch(authActions.authenticate(accessToken))
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Callback)
+export default Callback
