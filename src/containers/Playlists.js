@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import * as selectors from '../store/reducers/selectors'
 import * as actions from '../store/actions/index'
+import { MyCarousel } from '../components/MyCarousel'
 
 class Playlists extends React.Component {
   componentDidMount() {
@@ -9,7 +10,8 @@ class Playlists extends React.Component {
   }
 
   render() {
-    return null
+    if (this.props.loading) return <p>Loading...</p>
+    return <MyCarousel items={this.props.playlists} />
   }
 }
 
@@ -20,7 +22,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getPlaylists: () => dispatch(actions.getPlaylists())
-  // setPlalist: id => dispatch(actions.setPlalist(id))
+  // setPlaylist: id => dispatch(actions.setPlaylist(id))
 })
 
 export default connect(

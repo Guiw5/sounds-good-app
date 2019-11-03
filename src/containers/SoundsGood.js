@@ -13,16 +13,18 @@ export default class SoundsGood extends React.Component {
     if (!authService.isLogged()) return <Redirect to="/" />
 
     return (
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col">
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col">
             <Profile />
           </div>
-          <div class="col">
-            <Playlists />
-          </div>
-          <div class="col">
-            <Songs />
+          <div className="col">
+            <div className="row" styles={{ padding: '10px' }}>
+              <Playlists />
+            </div>
+            <div className="row">
+              <Songs />
+            </div>
           </div>
         </div>
       </div>

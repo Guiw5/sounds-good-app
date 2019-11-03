@@ -16,7 +16,8 @@ export default class LogIn extends React.Component {
       <div className={'login'}>
         <p>
           Welcome!! Please login with your{' '}
-          <a style={{ color: '#1db954' }}>Spotify</a> account
+          <div style={{ color: '#1db954', display: 'inline' }}>Spotify</div>{' '}
+          account
         </p>
         <p>
           <Button onClick={this.login}>Login</Button>

@@ -1,5 +1,5 @@
 const client_id = process.env.REACT_APP_SOUNDSGOOD_CLIENT_ID
-const redirect_uri = 'http://localhost:8888/callback'
+const redirect_uri = 'http://localhost:3006/callback'
 const stateKey = 'spotify_auth_state'
 const scope = 'user-read-private user-read-email playlist-read-private'
 

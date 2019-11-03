@@ -31,9 +31,9 @@ export const getPlaylistsRequest = () => ({
   type: 'GET_PLAYLISTS_REQUEST'
 })
 
-export const getPlaylistsSuccess = profile => ({
+export const getPlaylistsSuccess = data => ({
   type: 'GET_PLAYLISTS_SUCCESS',
-  profile
+  data
 })
 
 export const getPlaylistsError = () => ({
@@ -48,7 +48,25 @@ export const getPlaylists = () => async dispatch => {
       headers: { Authorization: `Bearer ${token}` }
     })
 
-    dispatch(getPlaylistsSuccess(data))
+    let spotifyLists = data.items.slice(0, 5)
+
+    const playlists = spotifyLists.map(spotList => {
+      return {
+        id: spotList.id,
+        src:
+          spotList.images.length > 1
+            ? spotList.images.find(x => x.height === 300).url
+            : spotList.images[0].url,
+        name: spotList.name,
+        display_name: spotList.owner.display_name,
+        tracks: spotList.tracks,
+        uri: spotList.uri,
+        collaborative: spotList.collaborative,
+        public: spotList.public
+      }
+    })
+
+    dispatch(getPlaylistsSuccess(playlists))
   } catch (error) {
     dispatch(getPlaylistsError(error))
   }
