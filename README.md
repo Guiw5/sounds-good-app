@@ -3,7 +3,8 @@ SoundsGood
 First of all, I really enjoyed learning how to use the spotify API.
 
 At the begining, I choosed Authorization Code grant
-trying to take advantage of my backend knowledge creating a minimal server
+trying to take advantage of my backend knowledge creating a minimal server.
+
 I was expecting not much complexity and more safety
 
 But I've started to have issues with CORS (cross-origin headers) with the SpotifyAuth Flow when I was developing,
@@ -14,7 +15,8 @@ compiling react (js boundle to have it in public) and then put it together in th
 but this way add more complexity to debug and the developing tasks takes too long.
 
 Therefore, I've started to use Implicit Grant
-we never want to expose our application Client Secret to a user, with implicit grant you don't have to, it just need the apiKey
+
+We never want to expose our application Client Secret to a user, with implicit grant you don't have to, it just need the apiKey
 With this option you can develop all the code from the client, it less secured but faster, and easy to deploy it.
 Is a great way if you just want to consume an api to test it, show it, like demos or small apps. But it's not recommended for apps with long term users.
 
