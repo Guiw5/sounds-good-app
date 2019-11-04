@@ -1,5 +1,7 @@
 SoundsGood
 
+Link to the app: https://soundsgoodapp.herokuapp.com/me
+
 First of all, I really enjoyed learning how to use the spotify API.
 
 At the begining, I choosed Authorization Code grant
