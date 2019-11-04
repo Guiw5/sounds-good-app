@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import * as selectors from '../store/reducers/selectors'
 import * as actions from '../store/actions/index'
 
@@ -12,13 +13,23 @@ import {
   CardSubtitle,
   Button
 } from 'reactstrap'
+import authService from '../services/authService'
 
 class Profile extends React.Component {
+  state = { logout: false }
+
   componentDidMount() {
     this.props.getProfile()
   }
 
+  logout = () => {
+    authService.logout()
+    this.setState({ logout: true })
+  }
+
   render() {
+    if (this.state.logout) return <Redirect to="/" />
+
     if (this.props.loading) return <p>Loading...</p>
 
     if (this.props.profile !== null) {
@@ -37,7 +48,7 @@ class Profile extends React.Component {
               <CardTitle>{`Hi ${display_name}!!`} </CardTitle>
               <CardSubtitle>{'Welcome to SoundsGood'}</CardSubtitle>
               <CardText>{email}</CardText>
-              <Button>LogOut</Button>
+              <Button onClick={this.logout}>LogOut</Button>
             </CardBody>
           </Card>
         </div>

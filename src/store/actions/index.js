@@ -105,17 +105,9 @@ export const setPlaylist = playlist_id => async dispatch => {
         })
       }
     })
-    // id: data.id,
-    // description: data.description,
-    // name: data.name,
-    // owner: data.owner.display_name,
-    // href: data.href,
-
-    console.log('das', playlist)
 
     dispatch(getSongsSuccess(playlist))
   } catch (error) {
-    // authService.logout()
     dispatch(getSongsError(error))
   }
 }

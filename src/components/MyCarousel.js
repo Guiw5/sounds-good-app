@@ -13,10 +13,9 @@ export const MyCarousel = ({ items, setPlaylist }) => {
 
   useEffect(() => {
     if (items.length > 0) setPlaylist(items[activeIndex].id)
-  }, [])
+  }, [activeIndex])
 
   const setItem = index => {
-    setPlaylist(items[index].id)
     setActiveIndex(index)
   }
 
@@ -54,7 +53,7 @@ export const MyCarousel = ({ items, setPlaylist }) => {
     <Carousel
       interval={'10000'}
       pause={'hover'}
-      ride={false}
+      // autoPlay={false}
       activeIndex={activeIndex}
       next={next}
       previous={previous}

@@ -1,8 +1,6 @@
 import React from 'react'
-import { Media } from 'reactstrap'
 
 export const SongsList = ({ songs }) => {
-  console.log(songs[0])
   return (
     <div
       style={{
@@ -11,13 +9,14 @@ export const SongsList = ({ songs }) => {
         width: '400px'
       }}
     >
-      {songs.map(x => (
+      {songs.map((x, index) => (
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             borderBottom: '1px solid '
           }}
+          key={index}
         >
           <div
             style={{
