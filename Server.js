@@ -1,3 +1,6 @@
+const dotenv = require('dotenv')
+dotenv.config()
+
 //package to wrap UnhandledRejectionPromiseWarnings in Exceptions
 require('express-async-errors')
 const express = require('express')
@@ -42,32 +45,11 @@ var generateRandomString = function(length) {
 var stateKey = 'spotify_auth_state'
 
 const app = express()
-app
-  .use(function(_, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    res.setHeader('Access-Control-Request-Method', '*')
-    res.setHeader(
-      'Access-Control-Allow-Methods',
-      'OPTIONS, GET, POST, PUT, DELETE'
-    )
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-
-    next()
-  })
-  .use(express.static(path.join(__dirname, 'client', 'build')))
+  .use(express.static(__dirname + '/public'))
   .use(express.json())
   .use(express.urlencoded({ extended: true }))
   .use(cors())
   .use(cookieParser())
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'))
-})
-
-app.get('/me', async (req, res) => {
-  const list = [{ name: 'juan' }, { name: 'pedro' }]
-  res.send(list)
-})
 
 app.get('/login', function(req, res) {
   var state = generateRandomString(16)
@@ -82,6 +64,7 @@ app.get('/login', function(req, res) {
         client_id: client_id,
         scope: scope,
         redirect_uri: redirect_uri,
+        show_dialog: true,
         state: state
       })
   )
@@ -137,7 +120,7 @@ app.get('/callback', function(req, res) {
 
         // we can also pass the token to the browser to make requests from there
         res.redirect(
-          '/#' +
+          'http://localhost:3006/#' +
             querystring.stringify({
               access_token: access_token,
               refresh_token: refresh_token
@@ -185,7 +168,7 @@ app.get('/refresh_token', function(req, res) {
 //error: middleware to write logs and send 500 status responses
 app.use(error)
 
-const port = process.env.PORT || 3000
+const port = config.get('port') || 3000
 const server = app.listen(port, () =>
   winston.info(`listening in port ${port}...`)
 )

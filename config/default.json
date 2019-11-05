@@ -1,3 +1,4 @@
 {
-  "redirectUri": "http://localhost:8888/callback"
+  "redirectUri": "http://localhost:8888/callback",
+  "port": "8888"
 }
