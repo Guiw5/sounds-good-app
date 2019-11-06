@@ -1,3 +1,12 @@
+Last Update: 
+
+06/11 - BRANCH: AUTHORIZATION-CODE 
+Fix CORS issue implementing authorization-code grant flow.
+
+---
+
+---
+
 SoundsGood
 
 Link to the app: https://soundsgoodapp.herokuapp.com/me
@@ -26,10 +35,6 @@ Is a great way if you just want to consume an api to test it, show it, like demo
 ---
 
 ---
-Last Update: 
-
-06/11 - BRANCH: AUTHORIZATION-CODE 
-Fix CORS issue implementing authorization-code grant flow. 
 
 ---
 
