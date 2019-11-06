@@ -4,7 +4,7 @@ Link to the app: https://soundsgoodapp.herokuapp.com/me
 
 First of all, I really enjoyed learning how to use the spotify API.
 
-At the begining, I choosed Authorization Code grant
+At the begining, I chose Authorization Code grant
 trying to take advantage of my backend knowledge creating a minimal server.
 
 I was expecting not much complexity and more safety
