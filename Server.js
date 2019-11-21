@@ -45,7 +45,7 @@ var generateRandomString = function(length) {
 var stateKey = 'spotify_auth_state'
 
 const app = express()
-  .use(express.static(__dirname + '/public'))
+  .use(express.static(path.join(__dirname, '/public')))
   .use(express.json())
   .use(express.urlencoded({ extended: true }))
   .use(cors())
@@ -56,7 +56,8 @@ app.get('/login', function(req, res) {
   res.cookie(stateKey, state)
 
   // your application requests authorization
-  var scope = 'user-read-private user-read-email'
+  //Required scopes: ["streaming", "user-read-email", "user-read-private"]
+  var scope = 'streaming user-read-private user-read-email'
   res.redirect(
     'https://accounts.spotify.com/authorize?' +
       querystring.stringify({
@@ -64,7 +65,7 @@ app.get('/login', function(req, res) {
         client_id: client_id,
         scope: scope,
         redirect_uri: redirect_uri,
-        show_dialog: true,
+        show_dialog: true, //popup to change user logged
         state: state
       })
   )
@@ -80,7 +81,7 @@ app.get('/callback', function(req, res) {
 
   if (state === null || state !== storedState) {
     res.redirect(
-      '/#' +
+      'http://localhost:3006/#' +
         querystring.stringify({
           error: 'state_mismatch'
         })
