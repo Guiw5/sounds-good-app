@@ -1,5 +1,4 @@
-const dotenv = require('dotenv')
-dotenv.config()
+require('dotenv').config()
 
 //package to wrap UnhandledRejectionPromiseWarnings in Exceptions
 require('express-async-errors')
@@ -7,10 +6,9 @@ const express = require('express')
 const config = require('config')
 const winston = require('winston')
 const error = require('./middlewares/error')
-const proxy = require('./middlewares/proxy')
 const request = require('request') // "Request" library
 const path = require('path')
-// const cors = require('cors')
+const cors = require('cors')
 const querystring = require('querystring')
 const cookieParser = require('cookie-parser')
 
@@ -47,24 +45,22 @@ const generateRandomString = function(length) {
 const stateKey = 'spotify_auth_state'
 
 const app = express()
-  .use(express.static(path.join(__dirname, '/public')))
   .use(express.json())
   .use(express.urlencoded({ extended: true }))
   .use(cookieParser())
+  .use(cors())
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(proxy)
-  app.get('/', (req, res) => {
-    res.redirect('http://localhost:3006')
-  })
-}
+if (process.env.NODE_ENV === 'development')
+  app.get('/', (req, res) => res.redirect('http://localhost:3006'))
 
-app.get('/login', function(req, res) {
+if (process.env.NODE_ENV === 'production')
+  app.use(express.static(path.join(__dirname, '/public')))
+
+app.get('/auth', async function(req, res) {
   const state = generateRandomString(16)
   res.cookie(stateKey, state)
 
   // your application requests authorization
-  //Required scopes: ["streaming", "user-read-email", "user-read-private"]
   const scope = 'streaming user-read-private user-read-email'
   res.redirect(
     'https://accounts.spotify.com/authorize?' +
@@ -79,21 +75,17 @@ app.get('/login', function(req, res) {
   )
 })
 
-app.get('/callback', function(req, res) {
+app.get('/callback', async function(req, res) {
   // your application requests refresh and access tokens
   // after checking the state parameter
-
   const code = req.query.code || null
   const state = req.query.state || null
   const storedState = req.cookies ? req.cookies[stateKey] : null
 
   if (state === null || state !== storedState) {
-    res.redirect(
-      'http://localhost:3006/login#' +
-        querystring.stringify({
-          error: 'state_mismatch'
-        })
-    )
+    //CSRF token error
+    const mismatch = querystring.stringify({ error: 'state_mismatch' })
+    res.redirect(`http://localhost:3006/login?${mismatch}`)
   } else {
     res.clearCookie(stateKey)
     const authOptions = {
@@ -117,52 +109,31 @@ app.get('/callback', function(req, res) {
         const refresh_token = body.refresh_token
         //tokens expires in 3600 seconds => 1 hour
 
-        const options = {
-          url: 'https://api.spotify.com/v1/me',
-          headers: { Authorization: 'Bearer ' + access_token },
-          json: true
-        }
+        res.cookie('token', access_token, { maxAge: 100000 })
+        res.cookie('refresh', refresh_token, { httpOnly: true })
 
-        // use the access token to access the Spotify Web API
-        request.get(options, function(error, response, body) {
-          winston.info(body)
-        })
-
-        // we can also pass the token to the browser to make requests from there
-        res.cookie('SPOTIFY_ACCESS_TOKEN', access_token)
-        res.cookie('SPOTIFY_REFRESH_TOKEN', refresh_token)
-
+        const success = querystring.stringify({ success: true })
         if (process.env.NODE_ENV === 'development')
-          res.redirect('http://localhost:3006/login#')
-        else res.redirect(process.env.PROJECT_ROOT + '/login#')
+          res.redirect(`http://localhost:3006/login?${success}`)
+        else res.redirect(`${process.env.PROJECT_ROOT}/login?${success}`)
       } else {
         //in case of error
+        const invalidToken = querystring.stringify({ error: 'invalid_token' })
+
         if (process.env.NODE_ENV === 'development')
-          res.redirect(
-            'http://localhost:3006/login#' +
-              querystring.stringify({ error: 'invalid_token' })
-          )
-        else
-          res.redirect(
-            process.env.PROJECT_ROOT +
-              '/login#' +
-              querystring.stringify({ error: 'invalid_token' })
-          )
+          res.redirect(`http://localhost:3006/login?${invalidToken}`)
+        else res.redirect(`${process.env.PROJECT_ROOT}/login?${invalidToken}`)
       }
     })
   }
 })
 
-app.get('/refresh_token', function(req, res) {
-  // requesting access token from refresh token
-  const refresh_token = req.query.refresh_token
+app.get('/refresh', async function(req, res) {
+  const refresh_token = req.cookies.refresh
+  const buffer = new Buffer(`${client_id}:${client_secret}`).toString('base64')
   const authOptions = {
     url: 'https://accounts.spotify.com/api/token',
-    headers: {
-      Authorization:
-        'Basic ' +
-        new Buffer(client_id + ':' + client_secret).toString('base64')
-    },
+    headers: { Authorization: `Basic ${buffer}` },
     form: {
       grant_type: 'refresh_token',
       refresh_token: refresh_token
@@ -173,9 +144,8 @@ app.get('/refresh_token', function(req, res) {
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       const access_token = body.access_token
-      res.send({
-        access_token: access_token
-      })
+      res.cookie('token', access_token, { maxAge: 100000 })
+      res.send({ access_token })
     }
   })
 })
