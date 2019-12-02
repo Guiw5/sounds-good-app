@@ -23,10 +23,20 @@ export default class SpotifyPlayer extends React.Component {
       if (window.Spotify !== null) {
         clearInterval(this.playerCheckInterval)
         spotifyApi.loadPlayer()
+        spotifyApi.onAuthenticationError(() => {
+          console.log('auth error spotify')
+        })
         spotifyApi.onPlayerReady(({ device_id }) => {
           spotifyApi.transferMyPlayback(device_id)
         })
+        spotifyApi.onInitializationError(() => {
+          console.log('INITIALIZATION ERROR')
+        })
+        spotifyApi.onPlayerNotReady(() => {
+          console.log('NOT READY')
+        })
         spotifyApi.onPlayerStateChanged(state => {
+          console.log('playerStateChanged', state)
           // if we're no longer listening to music, we'll get a null state.
           if (state !== null) {
             const { current_track, position, duration } = state.track_window

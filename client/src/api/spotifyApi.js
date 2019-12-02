@@ -30,9 +30,7 @@ class SpotifyApi extends SpotifyWebApi {
 
   loadToken() {
     const token = authService.getToken()
-    if (token) {
-      this.setAccessToken(token)
-    } else console.log('no token')
+    this.setAccessToken(token)
   }
 
   async transferMyPlayback(device, play = false) {
@@ -41,8 +39,7 @@ class SpotifyApi extends SpotifyWebApi {
     } catch (error) {
       /**
        * if responses 401 Unauthorized (invalid token)
-       * we have to refresh the token
-       * and do it again
+       * we have to refresh the token and do it again
        * */
       if (error.status === 401) {
         await authService.refreshToken()
@@ -56,6 +53,14 @@ class SpotifyApi extends SpotifyWebApi {
     const token = authService.getToken()
     const init = { name: 'SoundsGood Player', getOAuthToken: cb => cb(token) }
     this.player = new window.Spotify.Player(init)
+  }
+
+  onPlayerReady(cb) {
+    this.player.on('ready', cb)
+  }
+
+  onPlayerNotReady(cb) {
+    this.player.on('not_ready', cb)
   }
 
   onInitializationError(cb) {
@@ -76,10 +81,6 @@ class SpotifyApi extends SpotifyWebApi {
 
   onPlayerStateChanged(cb) {
     this.player.on('player_state_changed', cb)
-  }
-
-  onPlayerReady(cb) {
-    this.player.on('ready', cb)
   }
 }
 
