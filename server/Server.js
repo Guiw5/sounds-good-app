@@ -112,10 +112,10 @@ app.get('/callback', async function(req, res) {
         res.cookie('token', access_token, { maxAge: 100000 })
         res.cookie('refresh', refresh_token, { httpOnly: true })
 
-        const success = querystring.stringify({ success: true })
+        // const success = querystring.stringify({ success: true })
         if (process.env.NODE_ENV === 'development')
-          res.redirect(`http://localhost:3006/login?${success}`)
-        else res.redirect(`${process.env.PROJECT_ROOT}/login?${success}`)
+          res.redirect(`http://localhost:3006/login`)
+        else res.redirect(`${process.env.PROJECT_ROOT}/login`)
       } else {
         //in case of error
         const invalidToken = querystring.stringify({ error: 'invalid_token' })
