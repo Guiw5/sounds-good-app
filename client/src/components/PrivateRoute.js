@@ -6,7 +6,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props => {
-      if (authService.isAuthenticated()) return <Component {...props} />
+      if (authService.getToken()) return <Component {...props} />
       else
         return (
           <Redirect

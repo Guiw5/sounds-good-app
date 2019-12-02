@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { authService } from '../services/authService'
 
 export const AuthButton = withRouter(({ history }) => {
-  if (authService.isAuthenticated())
+  if (authService.getToken())
     return (
       <p>
         Welcome!{' '}
