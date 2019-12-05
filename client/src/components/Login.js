@@ -1,6 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-
+import { Button } from 'reactstrap'
 import { authService } from '../services/authService'
 
 export class Login extends React.Component {
@@ -17,9 +17,11 @@ export class Login extends React.Component {
     const { isAuthenticated } = this.state
     if (isAuthenticated) return <Redirect to="/home" />
     return (
-      <div>
-        <p>You must be log in to view this page at "/home"</p>
-        <button onClick={this.login}>Log In</button>
+      <div className={'login'}>
+        <p>Welcome!! Please login with your Spotify account</p>
+        <p>
+          <Button onClick={this.login}>Log In</Button>
+        </p>
       </div>
     )
   }

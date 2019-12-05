@@ -1,18 +1,56 @@
 :root {
   --spotify-green: #3cd37a;
   --spotify-bg: #282c34;
-  background-color: var(--spotify-bg);
-  color: var(--spotify-green);
+  /* background-color: var(--spotify-bg); */
+  /* color: var(--spotify-green); */
 }
 
 body {
+  background-color: var(--spotify-bg);
+  color: var(--spotify-green);
   margin: 0;
-  font-family: Circular, Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.btn:focus {
+  box-shadow: none;
+}
+
+.login {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.home {
+  display: flex;
+  height: 100vh;
+}
+
+.profile {
+  position: absolute;
+}
+
+.profile-pic {
+  margin-right: 5px;
+  border-radius: 50px;
+  height: 35px;
+}
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.music-content {
+  text-align: center;
+}
+
+.player-content {
 }

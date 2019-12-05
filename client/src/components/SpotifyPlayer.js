@@ -1,7 +1,7 @@
 import React from 'react'
 import { spotifyApi } from '../api/spotifyApi'
 
-export default class SpotifyPlayer extends React.Component {
+export class SpotifyPlayer extends React.Component {
   constructor(props) {
     super(props)
     this.playerCheckInterval = null
@@ -58,6 +58,7 @@ export default class SpotifyPlayer extends React.Component {
       }
     }, 1000)
   }
+
   componentWillUnmount() {
     spotifyApi.disconnect()
   }
@@ -77,17 +78,19 @@ export default class SpotifyPlayer extends React.Component {
   render() {
     const { artistName, trackName, albumName, playing } = this.state
     return (
-      <div>
-        <p>Artist: {artistName}</p>
-        <p>Track: {trackName}</p>
-        <p>Album: {albumName}</p>
-        <p>
+      <div className="content">
+        <div className="player-content">
           <button onClick={this.onPrevClick}>Previous</button>
           <button onClick={this.onPlayClick}>
             {playing ? 'Pause' : 'Play'}
           </button>
           <button onClick={this.onNextClick}>Next</button>
-        </p>
+        </div>
+        <div className="music-content">
+          <p>Artist: {artistName}</p>
+          <p>Track: {trackName}</p>
+          <p>Album: {albumName}</p>
+        </div>
       </div>
     )
   }
