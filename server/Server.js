@@ -85,7 +85,7 @@ app.get('/callback', async function(req, res) {
   if (state === null || state !== storedState) {
     //CSRF token error
     const mismatch = querystring.stringify({ error: 'state_mismatch' })
-    res.redirect(`http://localhost:3006/login?${mismatch}`)
+    res.redirect(`http://localhost:3006/home?${mismatch}`)
   } else {
     res.clearCookie(stateKey)
     const authOptions = {
@@ -114,15 +114,15 @@ app.get('/callback', async function(req, res) {
 
         // const success = querystring.stringify({ success: true })
         if (process.env.NODE_ENV === 'development')
-          res.redirect(`http://localhost:3006/login`)
-        else res.redirect(`${process.env.PROJECT_ROOT}/login`)
+          res.redirect(`http://localhost:3006/home`)
+        else res.redirect(`${process.env.PROJECT_ROOT}/home`)
       } else {
         //in case of error
         const invalidToken = querystring.stringify({ error: 'invalid_token' })
 
         if (process.env.NODE_ENV === 'development')
-          res.redirect(`http://localhost:3006/login?${invalidToken}`)
-        else res.redirect(`${process.env.PROJECT_ROOT}/login?${invalidToken}`)
+          res.redirect(`http://localhost:3006/home?${invalidToken}`)
+        else res.redirect(`${process.env.PROJECT_ROOT}/home?${invalidToken}`)
       }
     })
   }
