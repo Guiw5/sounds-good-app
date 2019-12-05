@@ -64,7 +64,7 @@ class SpotifyApi extends SpotifyWebApi {
   }
 
   onInitializationError(cb) {
-    this.player.on('initialization_error', e => cb(e))
+    this.player.on('initialization_error', cb)
   }
 
   onAuthenticationError(cb) {
@@ -72,11 +72,11 @@ class SpotifyApi extends SpotifyWebApi {
   }
 
   onAccountError(cb) {
-    this.player.on('account_error', e => cb(e))
+    this.player.on('account_error', cb)
   }
 
   onPlaybackError(cb) {
-    this.player.on('playback_error', e => cb(e))
+    this.player.on('playback_error', cb)
   }
 
   onPlayerStateChanged(cb) {
